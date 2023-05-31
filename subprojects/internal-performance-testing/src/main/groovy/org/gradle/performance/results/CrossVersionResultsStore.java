@@ -24,7 +24,6 @@ import org.gradle.performance.measure.DataSeries;
 import org.gradle.performance.measure.Duration;
 import org.gradle.performance.measure.MeasuredOperation;
 import org.gradle.util.GradleVersion;
-import org.joda.time.LocalDate;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -34,6 +33,7 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -235,7 +235,7 @@ public class CrossVersionResultsStore extends AbstractWritableResultsStore<Cross
                 executionsForName.setString(++idx, experiment.getScenario().getClassName());
                 executionsForName.setString(++idx, experiment.getScenario().getTestName());
                 executionsForName.setString(++idx, experiment.getTestProject());
-                Timestamp minDate = new Timestamp(LocalDate.now().minusDays(maxDaysOld).toDate().getTime());
+                Timestamp minDate = Timestamp.valueOf(LocalDate.now().minusDays(maxDaysOld).atStartOfDay());
                 executionsForName.setTimestamp(++idx, minDate);
                 for (String channelPattern : channelPatterns) {
                     executionsForName.setString(++idx, channelPattern);
